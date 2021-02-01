@@ -21,7 +21,7 @@ let assetsPath = 'assets';
 
 gulp.task('sass', function () {
   return gulp
-    .src(`${srcPath}/${assetsPath}/scss/app.scss`)
+    .src(`${srcPath}/${assetsPath}/scss/*.scss`)
     .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(gsmq())
