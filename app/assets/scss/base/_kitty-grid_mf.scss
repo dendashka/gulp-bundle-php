@@ -1,0 +1,182 @@
+$breakpoints: ( // breakpoints  
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+
+// media queries mixins
+@mixin breakpoint($screen-size) {
+  @if map-has-key($breakpoints, $screen-size) {
+    @media (min-width: map-get($breakpoints, $screen-size)) {
+      @content;
+    }
+  }
+
+  @else {
+    // Debugging
+    @error "#{$screen-size} has not been declared as a breakpoint."
+  }
+}
+
+// global variables to fallback in ie11 and old browsers
+$gl-content-width: 1170px;
+$gl-mob-padding: 15px;
+$gl-gutter: 15px;
+
+// container, variables and fluid mobile gutters for mordern browsers
+:root {
+  --content-width: 1170px;
+  --mob-padding: 15px;
+  --gutter: 15px;
+
+  @include breakpoint(lg) {
+    // --content-width: 1330px;
+  }
+
+  @include breakpoint(xxl) {
+    // --content-width: 1330px;
+  }
+}
+
+// default layout mixins
+@mixin row($gutter: false) {
+  display: flex;
+  flex-wrap: wrap;
+  clear: both;
+
+  @if (type-of($gutter)==number) and ($gutter > 0) {
+    @error "Unknown property `#{$gutter}`. The argument is a negative gutter value and must be empty, 0 or <0 in px,rem,em etc.";
+  }
+
+  @else if $gutter {
+    margin-left: $gutter;
+    margin-right: $gutter;
+  }
+
+  @else {
+    margin-left: calc(#{$gl-gutter} * -1); // ie11 fallback
+    margin-left: calc(var(--gutter) * -1);
+    margin-right: calc(#{$gl-gutter} * -1); // ie11 fallback
+    margin-right: calc(var(--gutter) * -1);
+  }
+}
+
+@mixin no-gutter {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@mixin col($gutter: var(--gutter)) {
+  box-sizing: border-box;
+  min-width: 0; // firefox fix Bug 1179454
+  margin-left: $gl-gutter; // ie11 fallback
+  margin-left: $gutter;
+  margin-right: $gl-gutter; // ie11 fallback
+  margin-right: $gutter;
+
+  @if (type-of($gutter)==string) and ($gutter !=var(--gutter)) {
+    @error "Unknown property `#{$gutter}`. The argument is positive gutter value and must be empty, 0 or >=0 in px,rem,em etc.";
+  }
+}
+
+@mixin size($col, $gutter: var(--gutter)) {
+  @if $col==auto {
+    width: auto;
+    flex-basis: auto;
+    flex-grow: 0;
+  }
+
+  @else if $col==adaptive {
+    width: 100%;
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
+  @else if(type-of($col)==number) and ($gutter !=0) {
+    width: calc(100% * #{$col} - #{$gl-gutter} * 2 - 0.1px); // ie11 fallback
+    width: calc(100% * #{$col} - #{$gutter} * 2 - 0.1px); // 0.1px - is a fix for ie11 in some situations
+    flex-basis: auto;
+    flex-grow: 0;
+  }
+
+  @else if(type-of($col)==number) and ($gutter=0) {
+    width: calc(100% * #{$col});
+    flex-basis: auto;
+    flex-grow: 0;
+  }
+
+  @else {
+    @error "Argument value must be 'auto', 'adaptive' or column ratio (e.g. '2/12').";
+  }
+}
+
+@mixin offset($col: false, $gutter: var(--gutter)) {
+  @if (type-of($col)==number) and ($col >=0) {
+    margin-left: calc(100% * #{$col} + #{$gl-gutter}); // ie11 fallback
+    margin-left: calc(100% * #{$col} + #{$gutter});
+  }
+
+  @else {
+    @error "Argument value must be a ratio (e.g. '2/12') or 0";
+  }
+}
+
+// main container
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(#{$gl-content-width} + #{$gl-mob-padding} * 2); // ie11 fallback
+  max-width: calc(var(--content-width) + var(--mob-padding) * 2);
+  padding: 0 $gl-mob-padding;
+  padding: 0 var(--mob-padding);
+  margin: 0 auto;
+}
+
+.container-fluid {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+// row
+.row {
+  @include row();
+
+  &_no-gutter {
+    @include no-gutter();
+  }
+}
+
+// EXTRA CLASSES
+// REMOVE IF IS NOT NECESSARY
+// ABOUT 30KB ADDITIONAL SIZE TO BUNDLE
+//  ||  ||  ||
+//  \/  \/  \/
+
+// col adaptive
+.col {
+  @include col();
+  @include size(adaptive);
+}
+
+// cols auto
+@for $i from 1 through 12 {
+  .col-#{$i} {
+      @include col();
+      @include size($i/12);
+  }
+}
+
+// cols with media
+@each $breakpoint, $size in $breakpoints {
+  @for $i from 1 through 12 {
+    .col-#{$breakpoint}-#{$i} {
+      @include breakpoint($breakpoint) {
+        @include col();
+        @include size($i/12);
+      }
+    }
+  }
+}

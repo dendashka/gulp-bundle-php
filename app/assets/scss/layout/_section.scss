@@ -1,0 +1,60 @@
+.s-title {
+}
+
+.s-subtitle {
+}
+
+.s-content {
+  ul,
+  ol {
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    li {
+      position: relative;
+      font-size: 14px;
+      padding-left: 18px;
+      margin-bottom: 3px;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    @include breakpoint(md){
+      font-size: 24px;
+    }
+  }
+
+  h3 {
+    font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    @include breakpoint(md){
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  }
+
+  img {
+    margin: 15px 0;
+  }
+
+  table {
+    margin: 10px 0;
+
+    td {
+      vertical-align: top;
+      padding-right: 2%;
+    }
+  }
+}

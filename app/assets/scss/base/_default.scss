@@ -1,0 +1,127 @@
+// ********** default ********** //
+
+// border for all element to check out them
+//  * {outline: 1px solid black}
+
+html {
+    scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+    padding: 0;
+}
+
+img,
+video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+iframe,
+button {
+    border: 0;
+}
+
+table {
+    border-spacing: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+figure {
+    margin: 0;
+}
+
+// ********** typografy ********** //
+
+// fonts family
+$main-font: 'Inter';
+
+// font sizes
+:root {
+    --def-fs: 16px;
+
+    @include breakpoint(sm){
+    
+    }
+}
+
+body {
+    font-family: $main-font;
+    font-size: var(--def-fs);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeSpeed;
+    line-height: 1.4;
+    font-weight: 400;
+    color: $black;
+}
+
+ul,
+ol {
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    color: green;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: inherit;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+p {
+    color: inherit;
+    margin-top: 0;
+    margin-bottom: 0;
+}
